@@ -1,0 +1,42 @@
+class CivitasAkademik:
+    def _init_(self, nama):
+        self.nama = nama
+
+    def tampilkan_data(self):   # POLYMORPHISM
+        print("Nama :", self.nama)
+class Mahasiswa(CivitasAkademik):
+    def _init_(self, nim, nama, jk, tahun):
+        super()._init_(nama)
+        self.nim = nim
+        self.jk = jk
+        self.tahun = tahun
+        self.krs = []
+        self.nilai = {}
+
+    def ambil_mk(self, mk):
+        self.krs.append(mk)
+
+    def isi_nilai(self, mk, huruf):
+        self.nilai[mk.kode] = Nilai(huruf)
+
+    def hitung_ips(self):
+        total_bobot = 0
+        total_sks = 0
+
+        for mk in self.krs:
+            if mk.kode in self.nilai:
+                n = self.nilai[mk.kode]
+                total_bobot += n.angka * mk.sks
+                total_sks += mk.sks
+
+        try:   # EXCEPTION HANDLING
+            return total_bobot / total_sks
+        except ZeroDivisionError:
+            return 0
+
+    # POLYMORPHISM
+    def tampilkan_data(self):
+        print(f"NIM : {self.nim}")
+        print(f"Nama: {self.nama}")
+        print(f"JK  : {self.jk}")
+        print(f"Thn : {self.tahun}")
